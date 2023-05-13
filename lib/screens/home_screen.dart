@@ -117,19 +117,25 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: e["yoast_head_json"]["twitter_image"] != null ?
-                        Image.network(
-                          e["yoast_head_json"]["twitter_image"],
-                          fit: BoxFit.fill,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            else {
-                              return Center(child: LinearProgressIndicator());
-                            }
-                          },
+                        Hero(
+                          tag: "image ${news.indexOf(e)}",
+                          child: Image.network(
+                            e["yoast_head_json"]["twitter_image"],
+                            fit: BoxFit.fill,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              else {
+                                return Center(child: LinearProgressIndicator());
+                              }
+                            },
+                          ),
                         ) :
-                        Image.asset("assets/images/news_image.jpg", fit: BoxFit.fill),
+                        Hero(
+                          tag: "network ${news.indexOf(e)}",
+                          child: Image.asset("assets/images/news_image.jpg", fit: BoxFit.fill),
+                        ),
           ),
         );
       }).toList();
