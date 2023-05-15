@@ -10,6 +10,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool loading = false;
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
@@ -34,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
-                CircularProgressIndicator(),
+                loading ? CircularProgressIndicator() : SizedBox(),
                 SizedBox(height: 10),
                 Text(
                   "Kayıt Ol",

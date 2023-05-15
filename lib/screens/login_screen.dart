@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/class.dart';
+import 'home_screen.dart';
 import 'register_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool loading = false;
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
-                CircularProgressIndicator(),
+                loading ? CircularProgressIndicator() : SizedBox(),
                 SizedBox(height: 10),
                 Text(
                   "Giriş",
@@ -171,6 +173,19 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   },
                   child: Text("Bir hesabın yok mu? Hemen kayıt ol!"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return HomePage();
+                        },
+                      ),
+                    );
+                  },
+                  child: Text("Üyeliksiz devam et!"),
                 ),
                 SizedBox(height: 10),
               ],
