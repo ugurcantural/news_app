@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/class.dart';
+import 'home_screen.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,6 +13,46 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool loading = false;
+
+  register({required String name, required String email, required String password, required String conpassword}) async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      Dio dio = Dio();
+      String url = "https://api.eskanist.com/public/api/register";
+      dio.options.headers["Content-Type"] = "application/json";
+      Map<String, dynamic> data = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "confirm_password": conpassword,
+      };
+      Response response = await dio.post(url, data: data);
+      if (response.data["success"] == true) {
+        User user = User(
+          name: response.data["name"], 
+          email: response.data["email"], 
+          phone: response.data["phone"], 
+          adress: response.data["adress"], 
+          create: response.data["created_at"], 
+          update: response.data["updated_at"],
+        );
+        Navigator.pop(context);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+          return HomePage(user: user);
+        }));
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Giriş yapılamadı! ${response.data["msg"]}")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Beklenmeyen bir hata oluştu! $e")));
+    }
+    setState(() {
+      loading = false;
+    });
+  }
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
@@ -249,7 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(duration: Duration(seconds: 2), content: Text("Parola eşleşme hatası!")));
                               }
                               else {
-                                print("apiye bağlan");
+                                register(name: _nameController.text, email: _emailController.text, password: _passwordController.text, conpassword: _conpasswordController.text);
                               }
                             }
                           },

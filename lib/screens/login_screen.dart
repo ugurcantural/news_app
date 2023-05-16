@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../utils/class.dart';
 import 'home_screen.dart';
@@ -12,6 +13,43 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool loading = false;
+
+  login({required String email, required String password}) async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      Dio dio = Dio();
+      String url = "https://api.eskanist.com/public/api/login";
+      dio.options.headers["Content-Type"] = "application/json";
+      Map<String, dynamic> data = {
+        "email": email,
+        "password": password,
+      };
+      Response response = await dio.post(url, data: data);
+      if (response.data["success"] == true) {
+        User user = User(
+          name: response.data["name"], 
+          email: response.data["email"], 
+          phone: response.data["phone"], 
+          adress: response.data["adress"], 
+          create: response.data["created_at"], 
+          update: response.data["updated_at"],
+        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+          return HomePage(user: user);
+        }));
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Giriş yapılamadı! ${response.data["msg"]}")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Beklenmeyen bir hata oluştu! $e")));
+    }
+    setState(() {
+      loading = false;
+    });
+  }
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
@@ -150,8 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Form geçerliyse işlemleri burada yapabilirsiniz.
-                              // Örneğin, form verilerini bir API'ye gönderebilirsiniz.
+                              login(email: _emailController.text, password: _passwordController.text);
                             }
                           },
                           child: Text("Giriş Yap"),
@@ -174,19 +211,19 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Text("Bir hesabın yok mu? Hemen kayıt ol!"),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return HomePage();
-                        },
-                      ),
-                    );
-                  },
-                  child: Text("Üyeliksiz devam et!"),
-                ),
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushReplacement(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) {
+                //           return HomePage();
+                //         },
+                //       ),
+                //     );
+                //   },
+                //   child: Text("Üyeliksiz devam et!"),
+                // ),
                 SizedBox(height: 10),
               ],
             ),

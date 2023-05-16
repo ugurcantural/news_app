@@ -5,7 +5,8 @@ import 'package:news_app/screens/info_screen.dart';
 import '../utils/class.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final User user;
+  const HomePage({super.key, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -31,6 +32,10 @@ class _HomePageState extends State<HomePage> {
       var response = await dio.get("https://www.nginx.com/wp-json/wp/v2/posts?page=$page");
       if (page == 1) {
         news = response.data;
+        setState(() {
+          pageId += 1;
+        });
+        getNews(pageId);
       }
       else {
         news += response.data;
@@ -209,6 +214,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Haberler"),
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.blueGrey,
+        child: SafeArea(
+          child: Column(
+            children: [
+              CircleAvatar(),
+              Divider(color: Colors.white, endIndent: 10, indent: 10, thickness: 2),
+              Text(widget.user.name ?? "No name!"),
+              Divider(color: Colors.white, endIndent: 10, indent: 10, thickness: 2),
+              // Text(widget.user.phone ?? "Telefon numarası yok!"),
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         controller: _scontroller,
