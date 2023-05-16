@@ -220,11 +220,109 @@ class _HomePageState extends State<HomePage> {
         child: SafeArea(
           child: Column(
             children: [
-              CircleAvatar(),
-              Divider(color: Colors.white, endIndent: 10, indent: 10, thickness: 2),
-              Text(widget.user.name ?? "No name!"),
-              Divider(color: Colors.white, endIndent: 10, indent: 10, thickness: 2),
-              // Text(widget.user.phone ?? "Telefon numarası yok!"),
+              SizedBox(height: 10),
+              CircleAvatar(
+                radius: 64,
+                backgroundColor: Colors.blueGrey[400],
+                child: Icon(Icons.account_circle_outlined, size: 50),
+              ),
+              SizedBox(height: 10),
+              Divider(color: Colors.white, endIndent: 20, indent: 20, thickness: 2),
+              Text(
+                widget.user.name ?? "No name!",
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              Divider(color: Colors.white, endIndent: 20, indent: 20, thickness: 2),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(Icons.account_circle_outlined, size: 32, color: Colors.white),
+                  ),
+                  SizedBox(width: 20),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(Icons.message_outlined, size: 32, color: Colors.white),
+                  ),
+                  SizedBox(width: 20),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(Icons.logout_outlined, size: 32, color: Colors.white),
+                  ),
+                ],
+              )
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 40),
+              //   child: Container(
+              //     padding: EdgeInsets.all(10),
+              //     width: double.infinity,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.white, width: 2),
+              //       // borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Text(
+              //       "Anasayfa",
+              //       textAlign: TextAlign.center,
+              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //   ),
+              // ),
+              // SizedBox(height: 10),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 40),
+              //   child: Container(
+              //     padding: EdgeInsets.all(10),
+              //     width: double.infinity,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.white, width: 2),
+              //       // borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Text(
+              //       "Hesabım",
+              //       textAlign: TextAlign.center,
+              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //   ),
+              // ),
+              // SizedBox(height: 10),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 40),
+              //   child: Container(
+              //     padding: EdgeInsets.all(10),
+              //     width: double.infinity,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: Colors.white, width: 2),
+              //       // borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: Text(
+              //       "Çıkış Yap",
+              //       textAlign: TextAlign.center,
+              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //   ),
+              // ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/class.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
@@ -36,6 +37,9 @@ class _LoginPageState extends State<LoginPage> {
           create: response.data["created_at"], 
           update: response.data["updated_at"],
         );
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // await prefs.setString("email", email);
+        // await prefs.setString("password", password);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return HomePage(user: user);
         }));
