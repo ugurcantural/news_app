@@ -37,9 +37,9 @@ class _LoginPageState extends State<LoginPage> {
           create: response.data["created_at"], 
           update: response.data["updated_at"],
         );
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // await prefs.setString("email", email);
-        // await prefs.setString("password", password);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString("email", email);
+        await prefs.setString("password", password);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return HomePage(user: user);
         }));

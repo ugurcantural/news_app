@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/info_screen.dart';
+import 'info_screen.dart';
+import 'login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/class.dart';
+import 'account_screen.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -239,13 +242,20 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return AccountPage(user: widget.user);
+                      }));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Icon(Icons.account_circle_outlined, size: 32, color: Colors.white),
                     ),
-                    child: Icon(Icons.account_circle_outlined, size: 32, color: Colors.white),
                   ),
                   SizedBox(width: 20),
                   Container(
@@ -257,13 +267,59 @@ class _HomePageState extends State<HomePage> {
                     child: Icon(Icons.message_outlined, size: 32, color: Colors.white),
                   ),
                   SizedBox(width: 20),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.blueGrey,
+                            content: Text("Çıkış yapılsın mı?", textAlign: TextAlign.center),
+                            contentTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Colors.white,
+                            ),
+                            actions: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }, 
+                                child: Text("Vazgeç"),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.blueGrey,
+                                  backgroundColor: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    prefs.clear();
+                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                                      return LoginPage(); 
+                                    }));
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Çıkış yapılırken bir hata oluştu!")));
+                                  }
+                                }, 
+                                child: Text("Çıkış Yap"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Icon(Icons.logout_outlined, size: 32, color: Colors.white),
                     ),
-                    child: Icon(Icons.logout_outlined, size: 32, color: Colors.white),
                   ),
                 ],
               )
