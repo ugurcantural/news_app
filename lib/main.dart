@@ -13,7 +13,8 @@ loadApp() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? email = prefs.getString("email");
   String? password = prefs.getString("password");
-  if (email != null && password != null) {
+  String? token = prefs.getString("token");
+  if (email != null && password != null && token != null) {
     try {
       Dio dio = Dio();
       String url = "https://api.eskanist.com/public/api/login";
@@ -25,6 +26,7 @@ loadApp() async {
       Response response = await dio.post(url, data: data);
       if (response.data["success"] == true) {
         user = User(
+          token: response.data["token"],
           name: response.data["name"], 
           email: response.data["email"], 
           phone: response.data["phone"], 
@@ -35,6 +37,7 @@ loadApp() async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("email", email);
         await prefs.setString("password", password);
+        await prefs.setString("token", response.data["token"]);
         isloggin = true;
       }
       else {

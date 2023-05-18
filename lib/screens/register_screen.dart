@@ -32,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Response response = await dio.post(url, data: data);
       if (response.data["success"] == true) {
         User user = User(
+          token: response.data["token"],
           name: response.data["name"], 
           email: response.data["email"], 
           phone: response.data["phone"], 
@@ -42,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString("email", email);
         await prefs.setString("password", password);
+        await prefs.setString("token", response.data["token"]);
         Navigator.pop(context);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return HomePage(user: user);

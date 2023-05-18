@@ -6,6 +6,7 @@ import 'login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/class.dart';
 import 'account_screen.dart';
+import 'tickets_screen.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -69,41 +70,43 @@ class _HomePageState extends State<HomePage> {
               border: Border.all(),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: AspectRatio(
-                    aspectRatio: 16/9,
-                    child: e["yoast_head_json"]["twitter_image"] != null ?
-                    Hero(
-                      tag: "image ${news.indexOf(e)}",
-                      child: Image.network(
-                        e["yoast_head_json"]["twitter_image"],
-                        fit: BoxFit.fill,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          else {
-                            return Center(child: LinearProgressIndicator());
-                          }
-                        },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: AspectRatio(
+                      aspectRatio: 16/9,
+                      child: e["yoast_head_json"]["twitter_image"] != null ?
+                      Hero(
+                        tag: "image ${news.indexOf(e)}",
+                        child: Image.network(
+                          e["yoast_head_json"]["twitter_image"],
+                          fit: BoxFit.fill,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            else {
+                              return Center(child: LinearProgressIndicator());
+                            }
+                          },
+                        ),
+                      ) :
+                      Hero(
+                        tag: "network ${news.indexOf(e)}",
+                        child: Image.asset("assets/images/news_image.jpg", fit: BoxFit.fill),
                       ),
-                    ) :
-                    Hero(
-                      tag: "network ${news.indexOf(e)}",
-                      child: Image.asset("assets/images/news_image.jpg", fit: BoxFit.fill),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  e["yoast_head_json"]["title"],
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                  SizedBox(height: 10),
+                  Text(
+                    e["yoast_head_json"]["title"],
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
         ) : SizedBox();
@@ -259,13 +262,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(width: 20),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return TicketPage();
+                      }));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Icon(Icons.message_outlined, size: 32, color: Colors.white),
                     ),
-                    child: Icon(Icons.message_outlined, size: 32, color: Colors.white),
                   ),
                   SizedBox(width: 20),
                   InkWell(
