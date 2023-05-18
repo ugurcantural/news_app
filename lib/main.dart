@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'screens/error_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'utils/class.dart';
@@ -41,7 +42,6 @@ loadApp() async {
       }
     } catch (e) {
       print("Beklenmeyen bir hata oluştu");
-      isloggin = false;
     }
   }
   else {
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: isloggin! ? HomePage(user: user!) : LoginPage(),
+      home: isloggin == true ? HomePage(user: user!) : (isloggin == false ? LoginPage() : ErrorPage()),
     );
   }
 }

@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadNews() {
-    return Column(
+    return Wrap(
       children: news.map((e) {
         return news.indexOf(e) > 10 ? InkWell(
           onTap: () {
@@ -61,7 +61,8 @@ class _HomePageState extends State<HomePage> {
             }));
           },
           child: Container(
-            width: double.infinity,
+            width: 180,
+            height: 220,
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
