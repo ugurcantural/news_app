@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         color: Colors.black,
-                        Icons.mail_outlined,
+                        Icons.account_circle_outlined,
                         size: 18,
                       ),
                       enabledBorder: OutlineInputBorder(

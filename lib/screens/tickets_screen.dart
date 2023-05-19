@@ -77,7 +77,12 @@ class _TicketPageState extends State<TicketPage> {
         child: tickets.length != 0 ? Column(
           children: tickets.map((e) {
             return Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.only(
+                bottom: 10,
+                top: 10,
+                right: tickets.indexOf(e) % 2 == 0 ? 40 : 10,
+                left: tickets.indexOf(e) % 2 == 0 ? 10 : 40,
+              ),
               child: InkWell(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -85,17 +90,17 @@ class _TicketPageState extends State<TicketPage> {
                   }));
                 },
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
+                    color: tickets.indexOf(e) % 2 == 0 ? Colors.blue[50] : Colors.blue[100],
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         flex: 1,
                         child: CircleAvatar(
-                          backgroundColor: Colors.blueGrey[400],
+                          backgroundColor: Colors.blue[50],
                           child: Icon(Icons.support_agent_outlined)
                         ),
                       ),
@@ -104,9 +109,17 @@ class _TicketPageState extends State<TicketPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(e.title ?? ""),
+                            Text(
+                              e.title ?? "",
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                fontSize: 16,
+                              ),
+                            ),
                             SizedBox(height: 5),
-                            Text(e.status ?? ""),
+                            Text(
+                              e.status ?? "",
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
                           ],
                         ),
                       )

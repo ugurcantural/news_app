@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/error_screen.dart';
 import 'screens/home_screen.dart';
@@ -65,15 +65,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ListeList App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light().copyWith(
-        colorScheme: ColorScheme.light().copyWith(primary: Colors.blueGrey),
-        scaffoldBackgroundColor: Colors.white,
+      theme: FlexThemeData.light(scheme: FlexScheme.hippieBlue).copyWith(
         appBarTheme: AppBarTheme(
           centerTitle: true,
-          systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
-            statusBarColor: Colors.transparent,
-            systemNavigationBarColor: Colors.white,
-          ),
         ),
       ),
       home: isloggin == true ? HomePage(user: user!) : (isloggin == false ? LoginPage() : ErrorPage()),

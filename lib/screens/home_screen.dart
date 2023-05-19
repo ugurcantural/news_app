@@ -1,12 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import '../widgets/drawer_widget.dart';
+import '../widgets/load_news.dart';
 import 'info_screen.dart';
-import 'login_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/class.dart';
-import 'account_screen.dart';
-import 'tickets_screen.dart';
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -19,8 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController _scontroller = ScrollController();
 
-  List<Widget> imageSliders = [];
   int _current = 0;
+
+  List<Widget> imageSliders = [];
   final CarouselController _controller = CarouselController();
 
   bool? loading;
@@ -50,70 +49,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       loading = false;
     });
-  }
-
-  Widget loadNews() {
-    return Wrap(
-      children: news.map((e) {
-        return news.indexOf(e) > 10 ? InkWell(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return InfoScreen(info: e);
-            }));
-          },
-          child: Container(
-            width: 160,
-            height: 180,
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Colors.blueGrey[50],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: AspectRatio(
-                      aspectRatio: 16/9,
-                      child: e["jetpack_featured_media_url"] != null ?
-                      Hero(
-                        tag: "image ${news.indexOf(e)}",
-                        child: Image.network(
-                          e["jetpack_featured_media_url"],
-                          fit: BoxFit.fill,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            else {
-                              return Center(child: LinearProgressIndicator());
-                            }
-                          },
-                        ),
-                      ) :
-                      Hero(
-                        tag: "network ${news.indexOf(e)}",
-                        child: Image.asset("assets/images/news_image.jpg", fit: BoxFit.fill),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    e["yoast_head_json"]["title"],
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ) : SizedBox();
-      }).toList(),
-    );
   }
 
   Widget loadSlider() {
@@ -182,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                     shape: BoxShape.circle,
                     color: (Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
-                            : Colors.black)
+                            : Theme.of(context).primaryColor)
                         .withOpacity(_current == entry.key ? 0.9 : 0.4)),
               ),
             );
@@ -197,8 +132,6 @@ class _HomePageState extends State<HomePage> {
         !_scontroller.position.outOfRange) {
       setState(() {
         getNews(pageId + 1);
-        // loadNews();
-        print("geldi");
       });
     }
     // if (_controller.offset <= _controller.position.minScrollExtent &&
@@ -222,178 +155,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("ListeList"),
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.blueGrey,
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              CircleAvatar(
-                radius: 64,
-                backgroundColor: Colors.blueGrey[400],
-                child: Icon(Icons.account_circle_outlined, size: 50),
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.white, endIndent: 20, indent: 20, thickness: 2),
-              Text(
-                widget.user.name ?? "No name!",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              Divider(color: Colors.white, endIndent: 20, indent: 20, thickness: 2),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return AccountPage(user: widget.user);
-                      }));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Icon(Icons.account_circle_outlined, size: 32, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return TicketPage();
-                      }));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Icon(Icons.message_outlined, size: 32, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: Colors.blueGrey,
-                            content: Text("Çıkış yapılsın mı?", textAlign: TextAlign.center),
-                            contentTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Colors.white,
-                            ),
-                            actions: [
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                }, 
-                                child: Text("Vazgeç"),
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.blueGrey,
-                                  backgroundColor: Colors.white,
-                                ),
-                                onPressed: () async {
-                                  try {
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    prefs.clear();
-                                    Navigator.pop(context);
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                                      return LoginPage(); 
-                                    }));
-                                  } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Çıkış yapılırken bir hata oluştu!")));
-                                  }
-                                }, 
-                                child: Text("Çıkış Yap"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Icon(Icons.logout_outlined, size: 32, color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 40),
-              //   child: Container(
-              //     padding: EdgeInsets.all(10),
-              //     width: double.infinity,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.white, width: 2),
-              //       // borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: Text(
-              //       "Anasayfa",
-              //       textAlign: TextAlign.center,
-              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //   ),
-              // ),
-              // SizedBox(height: 10),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 40),
-              //   child: Container(
-              //     padding: EdgeInsets.all(10),
-              //     width: double.infinity,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.white, width: 2),
-              //       // borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: Text(
-              //       "Hesabım",
-              //       textAlign: TextAlign.center,
-              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //   ),
-              // ),
-              // SizedBox(height: 10),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 40),
-              //   child: Container(
-              //     padding: EdgeInsets.all(10),
-              //     width: double.infinity,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.white, width: 2),
-              //       // borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: Text(
-              //       "Çıkış Yap",
-              //       textAlign: TextAlign.center,
-              //       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
+      drawer: drawerWidget(widget: widget),
       body: SingleChildScrollView(
         controller: _scontroller,
         child: Center(
@@ -402,7 +164,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               loadSlider(),
               SizedBox(height: 10),
-              loadNews(),
+              loadNews(context: context),
               SizedBox(height: 10),
               loading! ? CircularProgressIndicator() : SizedBox(),
               SizedBox(height: 10),

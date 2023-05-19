@@ -45,7 +45,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           Text(
                             widget.info["date"].toString().replaceAll("T", " "),
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: Colors.blueGrey,
+                              color: Theme.of(context).primaryColor,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -53,7 +53,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           Text(
                             widget.info["yoast_head_json"]["author"],
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: Colors.blueGrey,
+                              color: Theme.of(context).primaryColor,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -62,7 +62,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       SizedBox(width: 10),
                       CircleAvatar(
                         backgroundColor: Colors.transparent,
-                        foregroundColor: Colors.blueGrey,
+                        foregroundColor: Theme.of(context).primaryColor,
                         child: Icon(
                           Icons.account_circle_outlined,
                           size: 32,
@@ -71,11 +71,6 @@ class _InfoScreenState extends State<InfoScreen> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  // Text(
-                  //   widget.info["yoast_head_json"]["description"],
-                  //   style: Theme.of(context).textTheme.titleLarge,
-                  //   textAlign: TextAlign.center,
-                  // ),
                   HtmlWidget(
                     widget.info["content"]["rendered"],
                     onTapUrl: (p0) {

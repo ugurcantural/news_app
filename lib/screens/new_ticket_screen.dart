@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/home_screen.dart';
+import 'package:news_app/screens/tickets_screen.dart';
 import 'package:news_app/utils/class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,24 +30,37 @@ class _NewTicketPageState extends State<NewTicketPage> {
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: 5),
-              loading ? CircularProgressIndicator() : SizedBox(),
-              SizedBox(height: 5),
-              DropdownButton(
-                items: _dropdownItems.map((e) {
-                  return DropdownMenuItem(
-                    value: e,
-                    child: Text(e),
-                  );
-                }).toList(),
-                value: _selectedItem,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedItem = value!;
-                  });
-                },
-              ),
               SizedBox(height: 10),
+              loading ? CircularProgressIndicator() : SizedBox(),
+              SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    alignment: Alignment.center,
+                    items: _dropdownItems.map((item) => DropdownMenuItem<String>(
+                      value: item,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(item),
+                        ],
+                      ),
+                    )).toList(),
+                    value: _selectedItem,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedItem = value!;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
@@ -129,7 +143,7 @@ class _NewTicketPageState extends State<NewTicketPage> {
                       context: context, 
                       builder: (context) {
                         return AlertDialog(
-                          backgroundColor: Colors.blueGrey,
+                          backgroundColor: Theme.of(context).primaryColor,
                           content: Text("Mesaj gönderilsin mi?", textAlign: TextAlign.center),
                           contentTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: Colors.white,
@@ -146,7 +160,7 @@ class _NewTicketPageState extends State<NewTicketPage> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.blueGrey,
+                                foregroundColor: Theme.of(context).primaryColor,
                                 backgroundColor: Colors.white,
                               ),
                               onPressed: () async {
@@ -169,6 +183,12 @@ class _NewTicketPageState extends State<NewTicketPage> {
                                   };
                                   Response response = await dio.post(url, data: data);
                                   if (response.data["success"] == true) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                     return TicketPage(); 
+                                    }));
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Mesaj başarıyla gönderildi!")));
                                   }
                                   else {

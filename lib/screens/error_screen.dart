@@ -15,7 +15,17 @@ class _ErrorPageState extends State<ErrorPage> {
         title: Text("Hata"),
       ),
       body: Center(
-        child: Text("Beklenmeyen bir hata oluştu"),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Beklenmeyen bir hata oluştu!"),
+            SizedBox(height: 10),
+            // ElevatedButton(
+            //   onPressed: () {},
+            //   child: Text("Tekrar Dene"),
+            // ),
+          ],
+        ),
       ),
     );
   }

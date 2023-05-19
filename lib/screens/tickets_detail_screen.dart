@@ -68,59 +68,81 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Konuşma Geçmişi"),
+        title: CircleAvatar(
+          backgroundColor: Colors.blue[50],
+          child: Icon(Icons.support_agent_outlined)
+        ),
       ),
       body: loading ? Center(child: CircularProgressIndicator()) : SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.blueGrey[400],
-                        child: Icon(Icons.support_agent_outlined)
-                      ),
-                      SizedBox(height: 5),
-                      Text(tickets[index].topic ?? ""),
-                      SizedBox(height: 5),
-                      Text(tickets[index].title ?? ""),
-                      SizedBox(height: 5),
-                      Text(tickets[index].status ?? "")
-                    ],
-                  ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    // CircleAvatar(
+                    //   backgroundColor: Colors.blueGrey[400],
+                    //   child: Icon(Icons.support_agent_outlined)
+                    // ),
+                    // SizedBox(height: 5),
+                    Text(
+                      tickets[index].topic ?? "",
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      tickets[index].title ?? "",
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      tickets[index].status ?? "",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    )
+                  ],
                 ),
               ),
-              Column(
-                children: tickets[index].messages!.map((e) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(e.message ?? ""),
-                          SizedBox(height: 5),
-                          Text(e.time ?? ""),
-                        ],
-                      ),
+            ),
+            Column(
+              children: tickets[index].messages!.map((e) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 10,
+                    left: tickets[index].messages!.indexOf(e) % 2 == 0 ? 50 : 10,
+                    right: tickets[index].messages!.indexOf(e) % 2 == 0 ? 10 : 50,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: tickets[index].messages!.indexOf(e) % 2 == 0 ? Colors.blue[100] : Colors.blue[50],
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          e.message ?? "",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          e.time ?? "",
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
         ),
       ),
     );
