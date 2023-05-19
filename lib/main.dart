@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'News App',
+      title: 'ListeList App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         colorScheme: ColorScheme.light().copyWith(primary: Colors.blueGrey),

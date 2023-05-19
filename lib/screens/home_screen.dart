@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     });
     try {
       Dio dio = Dio();
-      var response = await dio.get("https://www.nginx.com/wp-json/wp/v2/posts?page=$page");
+      var response = await dio.get("https://listelist.com/wp-json/wp/v2/posts?page=$page");
       if (page == 1) {
         news = response.data;
         setState(() {
@@ -62,12 +62,12 @@ class _HomePageState extends State<HomePage> {
             }));
           },
           child: Container(
-            width: 180,
-            height: 220,
+            width: 160,
+            height: 180,
             margin: EdgeInsets.all(5),
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              border: Border.all(),
+              color: Colors.blueGrey[50],
               borderRadius: BorderRadius.circular(10),
             ),
             child: SingleChildScrollView(
@@ -77,11 +77,11 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                     child: AspectRatio(
                       aspectRatio: 16/9,
-                      child: e["yoast_head_json"]["twitter_image"] != null ?
+                      child: e["jetpack_featured_media_url"] != null ?
                       Hero(
                         tag: "image ${news.indexOf(e)}",
                         child: Image.network(
-                          e["yoast_head_json"]["twitter_image"],
+                          e["jetpack_featured_media_url"],
                           fit: BoxFit.fill,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) {
@@ -102,7 +102,9 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 10),
                   Text(
                     e["yoast_head_json"]["title"],
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 14,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -128,11 +130,11 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
-            child: e["yoast_head_json"]["twitter_image"] != null ?
+            child: ["jetpack_featured_media_url"] != null ?
                         Hero(
                           tag: "image ${news.indexOf(e)}",
                           child: Image.network(
-                            e["yoast_head_json"]["twitter_image"],
+                            e["jetpack_featured_media_url"],
                             fit: BoxFit.fill,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) {
@@ -160,7 +162,6 @@ class _HomePageState extends State<HomePage> {
                 options: CarouselOptions(
                     autoPlay: true,
                     enlargeCenterPage: true,
-                    aspectRatio: 2.0,
                     onPageChanged: (index, reason) {
                       setState(() {
                         _current = index;
@@ -213,14 +214,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _scontroller.addListener(_scrollListener);
     getNews(pageId);
-    getNews(pageId + 1);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Haberler"),
+        title: Text("ListeList"),
       ),
       drawer: Drawer(
         backgroundColor: Colors.blueGrey,

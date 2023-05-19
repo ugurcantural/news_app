@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      sha256: b36c7f7e24c0bdf1bf9a3da461c837d1de64b9f8beb190c9011d8c72a3dfd745
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -112,6 +120,30 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_widget_from_html_core:
+    dependency: "direct main"
+    description:
+      name: flutter_widget_from_html_core
+      sha256: "77f05cd7a738078dcdbe07741140d58b2fe7509197f3855a91269fb5a90f4bee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.1"
+  fwfh_text_style:
+    dependency: transitive
+    description:
+      name: fwfh_text_style
+      sha256: "66ea19f4b5837789a82e5dd4a1d169e4f1693f6846d7e50439772a6a324343f7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.22.8+2"
+  html:
+    dependency: transitive
+    description:
+      name: html
+      sha256: "58e3491f7bf0b6a4ea5110c0c688877460d1a6366731155c4a4580e7ded773e8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.15.3"
   http_parser:
     dependency: transitive
     description:
@@ -359,4 +391,4 @@ packages:
     version: "1.0.0"
 sdks:
   dart: ">=2.19.5 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.7.0-0"
