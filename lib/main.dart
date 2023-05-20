@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ListeList App',
+      title: 'ListeList',
       debugShowCheckedModeBanner: false,
       theme: FlexThemeData.light(scheme: FlexScheme.hippieBlue).copyWith(
         appBarTheme: AppBarTheme(

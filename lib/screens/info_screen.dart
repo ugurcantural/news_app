@@ -17,6 +17,12 @@ class _InfoScreenState extends State<InfoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.info["yoast_head_json"]["title"]),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.favorite_outline_outlined),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

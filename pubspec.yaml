@@ -41,6 +41,7 @@ dependencies:
   flutter_widget_from_html_core: ^0.10.1
   flex_color_scheme: ^7.0.5
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

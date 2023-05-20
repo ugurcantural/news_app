@@ -20,10 +20,10 @@ class _ErrorPageState extends State<ErrorPage> {
           children: [
             Text("Beklenmeyen bir hata oluştu!"),
             SizedBox(height: 10),
-            // ElevatedButton(
-            //   onPressed: () {},
-            //   child: Text("Tekrar Dene"),
-            // ),
+            ElevatedButton(
+              onPressed: () async {},
+              child: Text("Favori ekle"),
+            ),
           ],
         ),
       ),
