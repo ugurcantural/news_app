@@ -15,7 +15,7 @@ class loadNews extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: news.map((e) {
-        return news.indexOf(e) > 10 ? InkWell(
+        return news.indexOf(e) >= 10 ? InkWell(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return InfoScreen(info: e);

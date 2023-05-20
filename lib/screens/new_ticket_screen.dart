@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/screens/home_screen.dart';
 import 'package:news_app/screens/tickets_screen.dart';
 import 'package:news_app/utils/class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -169,7 +168,7 @@ class _NewTicketPageState extends State<NewTicketPage> {
                                 });
                                 try {
                                   Dio dio = Dio();
-                                  String url = "https://api.eskanist.com/public/api/tickets";
+                                  String url = "https://api.qline.app/api/tickets";
                                   SharedPreferences prefs = await SharedPreferences.getInstance();
                                   String? token = prefs.getString("token");
                                   dio.options.headers.addAll({

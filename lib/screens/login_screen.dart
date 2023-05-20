@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     try {
       Dio dio = Dio();
-      String url = "https://api.eskanist.com/public/api/login";
+      String url = "https://api.qline.app/api/login";
       dio.options.headers["Content-Type"] = "application/json";
       Map<String, dynamic> data = {
         "email": email,

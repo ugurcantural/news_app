@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
     });
     try {
       Dio dio = Dio();
-      String url = "https://api.eskanist.com/public/api/register";
+      String url = "https://api.qline.app/api/register";
       dio.options.headers["Content-Type"] = "application/json";
       Map<String, dynamic> data = {
         "name": name,

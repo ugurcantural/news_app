@@ -21,7 +21,7 @@ class _TicketPageState extends State<TicketPage> {
     });
     try {
       Dio dio = Dio();
-      String url = "https://api.eskanist.com/public/api/tickets";
+      String url = "https://api.qline.app/api/tickets";
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");
       dio.options.headers["authorization"] = "Bearer $token";
@@ -129,7 +129,12 @@ class _TicketPageState extends State<TicketPage> {
               ),
             );
           }).toList(),
-        ): Center(child: Text("Ticket Bulunamadı!")),
+        ): Center(child: Column(
+          children: [
+            SizedBox(height: 10),
+            Text("Ticket Bulunamadı!", style: Theme.of(context).textTheme.labelLarge),
+          ],
+        )),
       ),
     );
   }

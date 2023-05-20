@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/error_screen.dart';
 import 'screens/home_screen.dart';
@@ -17,7 +18,7 @@ loadApp() async {
   if (email != null && password != null && token != null) {
     try {
       Dio dio = Dio();
-      String url = "https://api.eskanist.com/public/api/login";
+      String url = "https://api.qline.app/api/login";
       dio.options.headers["Content-Type"] = "application/json";
       Map<String, dynamic> data = {
         "email": email,
@@ -68,6 +69,9 @@ class MyApp extends StatelessWidget {
       theme: FlexThemeData.light(scheme: FlexScheme.hippieBlue).copyWith(
         appBarTheme: AppBarTheme(
           centerTitle: true,
+          systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
+            statusBarColor: Colors.transparent,
+          ),
         ),
       ),
       home: isloggin == true ? HomePage(user: user!) : (isloggin == false ? LoginPage() : ErrorPage()),

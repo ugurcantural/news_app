@@ -26,7 +26,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
     });
     try {
       Dio dio = Dio();
-      String url = "https://api.eskanist.com/public/api/tickets/messages?id=${widget.id}";
+      String url = "https://api.qline.app/api/tickets/messages?id=${widget.id}";
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");
       dio.options.headers["authorization"] = "Bearer $token";
