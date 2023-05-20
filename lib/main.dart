@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,10 @@ User? user;
 bool? isloggin;
 loadApp() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? savedList = prefs.getString('myList');
+  if (savedList != null) {
+    favoritedList = json.decode(savedList).cast<String>();
+  }
   String? email = prefs.getString("email");
   String? password = prefs.getString("password");
   String? token = prefs.getString("token");

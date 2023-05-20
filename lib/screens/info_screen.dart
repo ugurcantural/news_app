@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/class.dart';
 
@@ -19,8 +22,26 @@ class _InfoScreenState extends State<InfoScreen> {
         title: Text(widget.info["yoast_head_json"]["title"]),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.favorite_outline_outlined),
+            onPressed: () async {
+              if (favoritedList.contains(widget.info["yoast_head_json"]["title"])) {
+                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Zaten listenizde kayıtlı")));
+                favoritedList.remove(widget.info["yoast_head_json"]["title"]);
+                favoritedList.remove(widget.info["content"]["rendered"]);
+              }
+              else {
+                favoritedList.add(widget.info["yoast_head_json"]["title"]);
+                favoritedList.add(widget.info["content"]["rendered"]);
+              }
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String encodedList = json.encode(favoritedList);
+              prefs.setString('myList', encodedList);
+              String? savedList = prefs.getString('myList');
+              if (savedList != null) {
+                favoritedList = json.decode(savedList).cast<String>();
+              }
+              setState(() {});
+            },
+            icon: favoritedList.contains(widget.info["yoast_head_json"]["title"]) ? Icon(Icons.favorite_outlined) : Icon(Icons.favorite_outline_outlined),
           ),
         ],
       ),
