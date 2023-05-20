@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,42 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   String messageStatus = ""; 
   bool loading = false;
   late int index;
+  Timer? timer;
+
+  getTicket() async {
+    try {
+      Dio dio = Dio();
+      String url = "https://api.qline.app/api/tickets/messages?id=${widget.id}";
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      dio.options.headers["authorization"] = "Bearer $token";
+      var response = await dio.get(url);
+      messageStatus = response.data["ticket"]["status"];
+      if (response.statusCode == 200) {
+        if (response.data.length != 0) {
+          String messagesString = response.data["ticket"]["messages"];
+          List<dynamic> messagesJson = jsonDecode(messagesString);
+          index = tickets.indexWhere((e) => e.id == widget.id);
+          tickets[index].user_id = response.data["ticket"]["user_id"];
+          tickets[index].messages = messagesJson.map((e) {
+            return Message(
+              user: e["user"],
+              message: e["message"],
+              time: e["time"],
+            );
+          }).toList();
+        }
+        setState(() {});
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ticket yüklenemedi! ${response.data["msg"]}")));
+        timer!.cancel();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Beklenmeyen bir hata oluştu! $e")));
+      timer!.cancel();
+    }
+  }
 
   getTicketsById() async {
     setState(() {
@@ -48,14 +85,15 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
               time: e["time"],
             );
           }).toList();
-          // print(tickets[index].messages![0].message);
         }
       }
       else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Ticket yüklenemedi! ${response.data["msg"]}")));
+        timer!.cancel();
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Beklenmeyen bir hata oluştu! $e")));
+      timer!.cancel();
     }
     setState(() {
       loading = false;
@@ -66,6 +104,19 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
   void initState() {
     super.initState();
     getTicketsById();
+    timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (messageStatus != "user_closed") {
+        getTicket();
+        print("çalıştı");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer!.cancel();
+    print("timer kapatıldı");
   }
 
   @override
@@ -80,6 +131,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             ),
             SizedBox(width: 10),
             Text("Api Bot"),
+            SizedBox(width: 10),
+            loading ? CircularProgressIndicator() : SizedBox(),
           ],
         ),
         actions: [
@@ -159,10 +212,12 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
           ),
         ],
       ),
-      body: loading ? Center(child: CircularProgressIndicator()) : Column(
+      body: loading ? Center(child: CircularProgressIndicator()) : 
+      Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
+              reverse: true,
               child: Column(
                 children: [
                   Padding(
@@ -254,9 +309,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                 FloatingActionButton(
                   onPressed: () async {
                     if (_messageController.text.isNotEmpty) {
-                      setState(() {
-                            loading = true;
-                          });
+                      // setState(() {
+                      //       loading = true;
+                      //     });
                           try {
                             Dio dio = Dio();
                             String url = "https://api.qline.app/api/tickets/respond";
@@ -272,7 +327,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                             };
                             Response response = await dio.post(url, data: data);
                             if (response.data["success"] == true) {
-                              getTicketsById();
+                              // getTicketsById();
                               _messageController.clear();
                             }
                             else {
@@ -281,9 +336,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Mesaj kapatılırken bir hata oluştu! $e")));
                           }
-                          setState(() {
-                            loading = false;
-                          });
+                          // setState(() {
+                          //   loading = false;
+                          // });
                     }
                   },
                   child: Icon(Icons.send,color: Colors.white,size: 18,),
