@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                   "Giriş",
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(height: 10),

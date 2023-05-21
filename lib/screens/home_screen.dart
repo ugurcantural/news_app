@@ -96,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                 items: imageSliders,
                 carouselController: _controller,
                 options: CarouselOptions(
+                  height: MediaQuery.of(context).orientation == Orientation.landscape ? MediaQuery.of(context).size.height / 2 : MediaQuery.of(context).size.height / 4,
                     autoPlay: true,
                     enlargeCenterPage: true,
                     onPageChanged: (index, reason) {
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: imageSliders.asMap().entries.map((entry) {
-            return GestureDetector(
+            return InkWell(
               onTap: () => _controller.animateToPage(entry.key),
               child: Container(
                 width: 12.0,

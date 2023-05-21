@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/settings/settings_cubit.dart';
 import '../screens/info_screen.dart';
 import '../utils/class.dart';
 
-class loadNews extends StatelessWidget {
+class loadNews extends StatefulWidget {
   const loadNews({
     super.key,
     required this.context,
   });
 
   final BuildContext context;
+
+  @override
+  State<loadNews> createState() => _loadNewsState();
+}
+
+class _loadNewsState extends State<loadNews> {
+  late final SettingsCubit settings;
+
+  @override
+  void initState() {
+    super.initState();
+    settings = context.read<SettingsCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +42,7 @@ class loadNews extends StatelessWidget {
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Colors.blue[50],
+              color: settings.state.darkMode ? Colors.grey[900] : Colors.blue[50],
               borderRadius: BorderRadius.circular(10),
             ),
             child: SingleChildScrollView(

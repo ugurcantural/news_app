@@ -16,6 +16,29 @@ class _ErrorPageState extends State<ErrorPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Favoriler"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    title: Text("Favoriler", textAlign: TextAlign.center),
+                    titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                    content: Text(textAlign: TextAlign.center, "Bu ekranda favorileriniz gözükmektedir. Eğer uygulamayı açtıktan sonra bu ekranı görürseniz bir bağlantı problemi yaşıyorsunuz demektir. Bu sırada sizler beğenmiş olduğunuz içerikleri internetsiz bir şekilde okumaya devam edebilirsiniz."),
+                    contentTextStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.info_outline_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -29,7 +52,15 @@ class _ErrorPageState extends State<ErrorPage> {
                     child: DescriptionContainer(favoritedList[i], favoritedList[i + 1]),
                   )
               ],
-            ) : Text("Favori Listesi Boş!"),
+            ) : Center(child: Column(
+              children: [
+                SizedBox(height: 10),
+                Text(
+                  "Favori Listesi Boş!",
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            )),
           ],
         ),
       ),

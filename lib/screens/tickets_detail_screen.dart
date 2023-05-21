@@ -3,7 +3,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../bloc/settings/settings_cubit.dart';
 import '../utils/class.dart';
 import 'tickets_screen.dart';
 
@@ -19,6 +21,8 @@ class TicketDetailPage extends StatefulWidget {
 }
 
 class _TicketDetailPageState extends State<TicketDetailPage> {
+  late final SettingsCubit settings;
+
   TextEditingController _messageController = TextEditingController();
   String messageStatus = ""; 
   bool loading = false;
@@ -110,6 +114,7 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
         print("çalıştı");
       }
     });
+    settings = context.read<SettingsCubit>();
   }
 
   @override
@@ -131,8 +136,8 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
             ),
             SizedBox(width: 10),
             Text("Api Bot"),
-            SizedBox(width: 10),
-            loading ? CircularProgressIndicator() : SizedBox(),
+            // SizedBox(width: 10),
+            // loading ? CircularProgressIndicator() : SizedBox(),
           ],
         ),
         actions: [
@@ -260,7 +265,9 @@ class _TicketDetailPageState extends State<TicketDetailPage> {
                           width: double.infinity,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: tickets[index].messages![tickets[index].messages!.indexOf(e)].user == true ? Colors.blue[100] : Colors.blue[50],
+                            color: tickets[index].messages![tickets[index].messages!.indexOf(e)].user == true ? 
+                              (settings.state.darkMode ? Colors.grey[800] : Colors.blue[50]) : 
+                              (settings.state.darkMode ? Colors.grey[900] : Colors.blue[100]),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(

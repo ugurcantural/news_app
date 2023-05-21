@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../bloc/settings/settings_cubit.dart';
 import '../utils/class.dart';
 import 'new_ticket_screen.dart';
 import 'tickets_detail_screen.dart';
@@ -14,6 +16,7 @@ class TicketPage extends StatefulWidget {
 
 class _TicketPageState extends State<TicketPage> {
   bool loading = false;
+  late final SettingsCubit settings;
 
   getTicket() async {
     setState(() {
@@ -55,6 +58,7 @@ class _TicketPageState extends State<TicketPage> {
   void initState() {
     super.initState();
     getTicket();
+    settings = context.read<SettingsCubit>();
   }
 
   @override
@@ -92,7 +96,9 @@ class _TicketPageState extends State<TicketPage> {
                 child: Container(
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: tickets.indexOf(e) % 2 == 0 ? Colors.blue[50] : Colors.blue[100],
+                    color: tickets.indexOf(e) % 2 == 0 ? 
+                    (settings.state.darkMode ? Colors.grey[800] : Colors.blue[50]) : 
+                    (settings.state.darkMode ? Colors.grey[900] : Colors.blue[100]),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(

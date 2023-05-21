@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   "Kayıt Ol",
                   style: Theme.of(context).textTheme.headline4?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 SizedBox(height: 10),
