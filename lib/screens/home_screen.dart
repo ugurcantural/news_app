@@ -133,7 +133,8 @@ class _HomePageState extends State<HomePage> {
     if (_scontroller.offset >= _scontroller.position.maxScrollExtent &&
         !_scontroller.position.outOfRange) {
       setState(() {
-        getNews(pageId + 1);
+        pageId += 1;
+        getNews(pageId);
       });
     }
     // if (_controller.offset <= _controller.position.minScrollExtent &&
