@@ -20,6 +20,7 @@ User? user;
 bool? isloggin;
 loadApp() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
   String? language = prefs.getString("language");
   bool? darkMode = prefs.getBool("darkMode");
   if (language == null) {
@@ -54,6 +55,7 @@ loadApp() async {
   if (savedList != null) {
     favoritedList = json.decode(savedList).cast<String>();
   }
+
   String? email = prefs.getString("email");
   String? password = prefs.getString("password");
   String? token = prefs.getString("token");
@@ -95,6 +97,8 @@ loadApp() async {
   else {
     isloggin = false;
   }
+
+  
   return SettingsState(
     darkMode: darkMode,
     language: language,

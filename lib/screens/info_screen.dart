@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +52,13 @@ class _InfoScreenState extends State<InfoScreen> {
             widget.info["jetpack_featured_media_url"] != null ?
                     Hero(
                       tag: "image ${news.indexOf(widget.info)}",
-                      child: Image.network(widget.info["jetpack_featured_media_url"], fit: BoxFit.fill),
+                      // child: Image.network(widget.info["jetpack_featured_media_url"], fit: BoxFit.fill),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.info["jetpack_featured_media_url"],
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) => Center(child: LinearProgressIndicator()),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ) : 
                     Hero(
                       tag: "network ${news.indexOf(widget.info)}",

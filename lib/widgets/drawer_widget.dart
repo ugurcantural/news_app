@@ -213,7 +213,7 @@ class _drawerWidgetState extends State<drawerWidget> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text("TR", style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: settings.state.language == "tr" ? Colors.black : Colors.white,
+                              color: settings.state.language == "tr" ? Theme.of(context).primaryColor : Colors.white,
                             ),),
                           ),
                         ),
@@ -230,7 +230,7 @@ class _drawerWidgetState extends State<drawerWidget> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text("EN", style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: settings.state.language == "en" ? Colors.black : Colors.white,
+                              color: settings.state.language == "en" ? Theme.of(context).primaryColor : Colors.white,
                             ),),
                           ),
                         ),
